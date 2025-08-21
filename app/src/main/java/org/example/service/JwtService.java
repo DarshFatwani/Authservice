@@ -14,6 +14,11 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
+/*This is the secret key used to sign and verify JWTs.
+
+It must be long and random enough (typically base64 encoded).
+Storing it hardcoded like this is insecure; in real life, you’d load it from
+ application.properties or environment variables.*/
 
 @Service
 public class JwtService {
