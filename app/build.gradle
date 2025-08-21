@@ -36,8 +36,9 @@ dependencies {
     testAnnotationProcessor group: 'org.projectlombok', name: 'lombok', version: "$lombokVersion"
     testImplementation group: 'org.projectlombok', name: 'lombok', version: "$lombokVersion"
     implementation 'io.jsonwebtoken:jjwt-api:0.12.5'
-    implementation 'io.jsonwebtoken:jjwt-impl:0.12.5'
-    implementation 'io.jsonwebtoken:jjwt-jackson:0.12.5'
+    runtimeOnly  'io.jsonwebtoken:jjwt-impl:0.12.5'
+    runtimeOnly  'io.jsonwebtoken:jjwt-jackson:0.12.5'
+    implementation 'com.nimbusds:nimbus-jose-jwt:9.39'
     implementation 'org.springframework.boot:spring-boot-starter'
     testImplementation libs.junit
 }
