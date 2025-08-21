@@ -3,3 +3,17 @@
 
 # Ignore Gradle build output directory
 build
+# secrets/keys
+*.p12
+*.jks
+*.pem
+*.key
+*.crt
+.env
+secrets/
+*.p12
+*.jks
+*.pem
+*.key
+*.crt
+.env
