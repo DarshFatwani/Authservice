@@ -3,62 +3,69 @@ package org.example.service;
 import org.example.entities.UserInfo;
 import org.example.model.UserInfoDto;
 import org.example.repository.UserRepository;
+import org.example.utils.ValidationUtil;
+import org.example.auth.SecurityConfig;
+import org.example.auth.UserConfig;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import lombok.RequiredArgsConstructor;
-
 import java.util.HashSet;
 import java.util.Objects;
-
 import java.util.UUID;
 
 @Component
-@RequiredArgsConstructor // generates a constructor for all final fields
-public class UserDetailServiceImpl implements UserDetailsService {
+@AllArgsConstructor
+@Data
+public class UserDetailServiceImpl implements UserDetailsService
+{
+
+    @Autowired
+    private final UserRepository userRepository;
+
+    @Autowired
+    private final PasswordEncoder passwordEncoder;
+
 
     private static final Logger log = LoggerFactory.getLogger(UserDetailServiceImpl.class);
 
-    private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
-
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        log.debug("Entering loadUserByUsername...");
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException
+    {
+
+        log.debug("Entering in loadUserByUsername Method...");
         UserInfo user = userRepository.findByUsername(username);
-        if (user == null) {
-            log.error("Username not found: {}", username);
+        if(user == null){
+            log.error("Username not found: " + username);
             throw new UsernameNotFoundException("could not found user..!!");
         }
         log.info("User Authenticated Successfully..!!!");
         return new CustomUserDetails(user);
     }
 
-    public Boolean signupUser(UserInfoDto userInfoDto) {
-        final String username = userInfoDto.getUsername().trim();
-        final String email = userInfoDto.getEmail().trim().toLowerCase();
+    public UserInfo checkIfUserAlreadyExist(UserInfoDto userInfoDto){
+        return userRepository.findByUsername(userInfoDto.getUsername());
+    }
 
-        if (userRepository.existsByUsername(username)) {
-            log.warn("Signup failed: username already exists: {}", username);
-            return false;
-        }
-        if (userRepository.existsByEmail(email)) {
-            log.warn("Signup failed: email already exists: {}", email);
-            return false;
-        }
-
-        final String encoded = passwordEncoder.encode(userInfoDto.getPassword());
+    public Boolean signupUser(UserInfoDto userInfoDto){
+        if(ValidationUtil.validateUserAttributes(userInfoDto))
+        {
         userInfoDto.setPassword(passwordEncoder.encode(userInfoDto.getPassword()));
+        if(Objects.nonNull(checkIfUserAlreadyExist(userInfoDto))){
+            return false;
+        }
         String userId = UUID.randomUUID().toString();
         userRepository.save(new UserInfo(userId, userInfoDto.getUsername(), userInfoDto.getPassword(), new HashSet<>()));
         // pushEventToQueue
         return true;
     }
-
-
+    return false;}
 }

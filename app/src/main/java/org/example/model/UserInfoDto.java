@@ -1,32 +1,21 @@
 package org.example.model;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
-import lombok.Data;
-import org.example.validation.ValidPassword;
-@Data
-public class UserInfoDto {
 
-    @NotBlank
-    @Size(min = 3, max = 50)
-    private String username;
+import org.example.entities.UserInfo;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
-    @NotBlank
-    private String firstName;
+@JsonNaming (PropertyNamingStrategy.SnakeCaseStrategy.class)
+public class UserInfoDto extends UserInfo
+{
 
-    private String lastName;
+    private String firstName; // first_name
+
+    private String lastName; //last_name
 
     private Long phoneNumber;
 
-    @NotBlank
-    @Email
-    @Size(max = 255)
-    private String email;
+    private String email; // email
 
-    @NotBlank
-    @ValidPassword
-    private String password;
 
-    // getters and setters
 }

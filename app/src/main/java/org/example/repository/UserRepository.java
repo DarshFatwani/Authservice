@@ -7,9 +7,5 @@ import java.util.Optional;
 
 public interface UserRepository extends CrudRepository<UserInfo, Long> {
 
-    UserInfo findByUsername(String username);
-    Optional<UserInfo> findByEmail(String email);
-
-    boolean existsByUsername(String username);
-    boolean existsByEmail(String email);
+   public UserInfo findByUsername(String username);
 }
