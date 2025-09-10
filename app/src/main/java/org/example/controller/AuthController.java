@@ -1,11 +1,12 @@
 package org.example.controller;
 
+
 import org.example.entities.RefreshToken;
 import org.example.model.UserInfoDto;
 import org.example.response.JwtResponseDTO;
 import org.example.service.JwtService;
 import org.example.service.RefreshTokenService;
-import org.example.service.UserDetailServiceImpl;
+import org.example.service.UserDetailsServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,7 +29,7 @@ public class AuthController
     private RefreshTokenService refreshTokenService;
 
     @Autowired
-    private UserDetailServiceImpl userDetailsService;
+    private UserDetailsServiceImpl userDetailsService;
 
     @PostMapping("auth/v1/signup")
     public ResponseEntity SignUp(@RequestBody UserInfoDto userInfoDto){

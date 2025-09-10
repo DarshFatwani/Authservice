@@ -3,12 +3,8 @@ package org.example.service;
 import org.example.entities.UserInfo;
 import org.example.model.UserInfoDto;
 import org.example.repository.UserRepository;
-import org.example.utils.ValidationUtil;
-import org.example.auth.SecurityConfig;
-import org.example.auth.UserConfig;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +21,7 @@ import java.util.UUID;
 @Component
 @AllArgsConstructor
 @Data
-public class UserDetailServiceImpl implements UserDetailsService
+public class UserDetailsServiceImpl implements UserDetailsService
 {
 
     @Autowired
@@ -35,7 +31,7 @@ public class UserDetailServiceImpl implements UserDetailsService
     private final PasswordEncoder passwordEncoder;
 
 
-    private static final Logger log = LoggerFactory.getLogger(UserDetailServiceImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(UserDetailsServiceImpl.class);
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException
@@ -56,8 +52,7 @@ public class UserDetailServiceImpl implements UserDetailsService
     }
 
     public Boolean signupUser(UserInfoDto userInfoDto){
-        if(ValidationUtil.validateUserAttributes(userInfoDto))
-        {
+        //        ValidationUtil.validateUserAttributes(userInfoDto);
         userInfoDto.setPassword(passwordEncoder.encode(userInfoDto.getPassword()));
         if(Objects.nonNull(checkIfUserAlreadyExist(userInfoDto))){
             return false;
@@ -67,5 +62,4 @@ public class UserDetailServiceImpl implements UserDetailsService
         // pushEventToQueue
         return true;
     }
-    return false;}
 }

@@ -1,6 +1,6 @@
 package org.example.auth;
 import org.example.service.JwtService;
-import org.example.service.UserDetailServiceImpl;
+import org.example.service.UserDetailsServiceImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -27,7 +27,7 @@ public class JwtAuthFilter extends OncePerRequestFilter
     @Autowired
     private final JwtService jwtService;
     @Autowired
-    private final UserDetailServiceImpl userDetailsService;
+    private final UserDetailsServiceImpl userDetailsService;
 
 
     @Override
